@@ -41,7 +41,7 @@ rarity_probs = {
 }
 
 
-weapons["avg_price"] = (weapons["low price point"] + weapons["high price point"]) / 2
+weapons["avg_price"] = (weapons["low_price"] + weapons["high_price"]) / 2
 
 roi_data = []
 
