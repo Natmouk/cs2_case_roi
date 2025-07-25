@@ -31,4 +31,47 @@ if sl.checkbox("Show raw weapons data"):
     sl.dataframe(weapons)
 
 
+sl.header("Case ROI Calculator")
+
+rarity_probs = {
+    "Covert": 0.0064,
+    "Classified": 0.0320,
+    "Restricted": 0.1598,
+    "Mil-Spec": 0.7992
+}
+
+
+weapons["avg_price"] = (weapons["low price point"] + weapons["high price point"]) / 2
+
+roi_data = []
+
+for case_name in cases["case name"].unique():
+    case_price = cases.loc[cases["case name"] == case_name, "case price"].values[0]
+    case_weapons = weapons[weapons["case name"] == case_name]
+    
+    expected_value = 0
+    
+    for rarity, prob in rarity_probs.items():
+        rarity_items = case_weapons[case_weapons["rarity"] == rarity]
+        if not rarity_items.empty:
+            avg_price = rarity_items["avg_price"].mean()
+            expected_value += prob * avg_price
+
+    roi = expected_value / case_price if case_price else 0
+
+    roi_data.append({
+        "Case": case_name,
+        "Expected Value": round(expected_value, 2),
+        "Case Price": round(case_price, 2),
+        "ROI": round(roi, 2)
+    })
+
+roi_df = pd.DataFrame(roi_data).sort_values(by="ROI", ascending=False)
+
+sl.subheader("ROI by Case")
+sl.dataframe(roi_df)
+
+sl.bar_chart(roi_df.set_index("Case")["ROI"])
+
+
 conn.close()
