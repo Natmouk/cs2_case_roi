@@ -45,9 +45,9 @@ weapons["avg_price"] = (weapons["low_price"] + weapons["high_price"]) / 2
 
 roi_data = []
 
-for case_name in cases["case name"].unique():
-    case_price = cases.loc[cases["case name"] == case_name, "case price"].values[0]
-    case_weapons = weapons[weapons["case name"] == case_name]
+for case_name in cases["case_name"].unique():
+    case_price = cases.loc[cases["case_name"] == case_name, "price"].values[0]
+    case_weapons = weapons[weapons["case_name"] == case_name]
     
     expected_value = 0
     
