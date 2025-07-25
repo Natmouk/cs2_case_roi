@@ -33,6 +33,8 @@ if sl.checkbox("Show raw weapons data"):
 
 sl.header("Case ROI Calculator")
 
+key_cost = 2.5
+
 rarity_probs = {
     "Covert": 0.0064,
     "Classified": 0.0320,
@@ -47,6 +49,7 @@ roi_data = []
 
 for case_name in cases["case_name"].unique():
     case_price = cases.loc[cases["case_name"] == case_name, "price"].values[0]
+    total_price = case_price + key_cost
     case_weapons = weapons[weapons["case_name"] == case_name]
     
     expected_value = 0
@@ -57,7 +60,7 @@ for case_name in cases["case_name"].unique():
             avg_price = rarity_items["avg_price"].mean()
             expected_value += prob * avg_price
 
-    roi = expected_value / case_price if case_price else 0
+    roi = expected_value / total_price if total_price else 0
 
     roi_data.append({
         "Case": case_name,
