@@ -31,3 +31,4 @@ if sl.checkbox("Show raw weapons data"):
     sl.dataframe(weapons)
 
 
+conn.close()
